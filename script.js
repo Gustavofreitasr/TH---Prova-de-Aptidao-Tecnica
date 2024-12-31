@@ -1,3 +1,4 @@
+// Importando informações
 const axios = require('axios');
 const db = require('./server');
 require('dotenv').config();
@@ -32,7 +33,7 @@ const fetchAndSaveFilm = async (title) => {
     }
 };
 
-// Função para atualizar informações de um filme no banco de dados
+// Função para atualizar informações de um filme
 const updateFilmInfo = async (filmId, title) => {
     try {
         const response = await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`);
@@ -58,7 +59,7 @@ const updateFilmInfo = async (filmId, title) => {
     }
 };
 
-// Função para encontrar ou criar um usuário com base no email
+// Função para encontrar um e-mail caso exista ou criar ele sozinho
 const findOrCreateUser = async (email, name) => {
     return new Promise((resolve, reject) => {
         const findQuery = 'SELECT user_id FROM user WHERE email = ?';
@@ -71,7 +72,7 @@ const findOrCreateUser = async (email, name) => {
                 // Usuário encontrado
                 resolve(results[0].user_id);
             } else {
-                // Criar novo usuário
+                // Inserir novo usuário
                 const insertQuery = 'INSERT INTO user (name, email) VALUES (?, ?)';
                 db.query(insertQuery, [name, email], (err, result) => {
                     if (err) {
@@ -84,7 +85,7 @@ const findOrCreateUser = async (email, name) => {
     });
 };
 
-// Função para inserir nova avaliação
+// Função para inserir nova avaliação no filme
 const addReview = async (filmId, email, name, rating, comment) => {
     try {
         const userId = await findOrCreateUser(email, name);
@@ -107,17 +108,17 @@ const addReview = async (filmId, email, name, rating, comment) => {
     }
 };
 
-// Função para automatizar as operações
+// Função para automatizar as requisições
 const automateUpdates = async () => {
-    // Exemplo de busca e inserção de um filme
+    // Exemplo de busca e adição de filme
     await fetchAndSaveFilm('Inception');
 
-    // Exemplo de atualização de informações do filme
+    // Exemplo de adição de código ao filme
     await updateFilmInfo('tt1375666', 'Inception');
 
-    // Exemplo de inserção de avaliação com usuário associado
+    // Exemplo de adição de comentário para usuários já criados no banco de dados
     await addReview('tt1375666', 'joao@email.com', 'João', 9, 'Excelente filme!');
 };
 
-// Execução automatizada
+// Função para automatizar as atualizações de informações de filmes e avaliações
 automateUpdates();
