@@ -110,15 +110,21 @@ const create_review = async (filmId, email, name, rating, comment) => {
 
 // Função para automatizar as requisições
 const automate_updates = async () => {
-    // Exemplo de busca e adição de filme
-    await search_save_film('Inception');
 
     // Exemplo de adição de código ao filme
-    await update_film('tt1375666', 'Inception');
+    await update_film('tt0100270', 'Nosferatu');
 
     // Exemplo de adição de comentário para usuários já criados no banco de dados
-    await create_review('tt1375666', 'joao@email.com', 'João', 9, 'Excelente filme!');
+    await create_review('tt0100270', 'iris@email.com', 'Iris', 1, 'Curti não!');
 };
 
+// Função para salvar as requisições
+const save_film = async () => {
+    // Exemplo de busca e adição de filme
+    await search_save_film('Nosferatu');
+};
+
+save_film();
+
 // Função para automatizar as atualizações de informações de filmes e avaliações
-automate_updates();
+//automate_updates();
