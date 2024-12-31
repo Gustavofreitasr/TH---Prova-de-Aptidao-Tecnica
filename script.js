@@ -4,7 +4,7 @@ const db = require('./server');
 require('dotenv').config();
 
 // Função para buscar e salvar filme no banco de dados
-const fetchAndSaveFilm = async (title) => {
+const search_save_film = async (title) => {
     try {
         const response = await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`);
         const film = response.data;
@@ -34,7 +34,7 @@ const fetchAndSaveFilm = async (title) => {
 };
 
 // Função para atualizar informações de um filme
-const updateFilmInfo = async (filmId, title) => {
+const update_film = async (filmId, title) => {
     try {
         const response = await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`);
         const film = response.data;
@@ -86,7 +86,7 @@ const findOrCreateUser = async (email, name) => {
 };
 
 // Função para inserir nova avaliação no filme
-const addReview = async (filmId, email, name, rating, comment) => {
+const create_review = async (filmId, email, name, rating, comment) => {
     try {
         const userId = await findOrCreateUser(email, name);
 
@@ -109,16 +109,16 @@ const addReview = async (filmId, email, name, rating, comment) => {
 };
 
 // Função para automatizar as requisições
-const automateUpdates = async () => {
+const automate_updates = async () => {
     // Exemplo de busca e adição de filme
-    await fetchAndSaveFilm('Inception');
+    await search_save_film('Inception');
 
     // Exemplo de adição de código ao filme
-    await updateFilmInfo('tt1375666', 'Inception');
+    await update_film('tt1375666', 'Inception');
 
     // Exemplo de adição de comentário para usuários já criados no banco de dados
-    await addReview('tt1375666', 'joao@email.com', 'João', 9, 'Excelente filme!');
+    await create_review('tt1375666', 'joao@email.com', 'João', 9, 'Excelente filme!');
 };
 
 // Função para automatizar as atualizações de informações de filmes e avaliações
-automateUpdates();
+automate_updates();
