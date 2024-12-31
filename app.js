@@ -1,3 +1,4 @@
+// Criação do servidor HTTP para fazer requisição
 const express = require('express');
 const axios = require('axios');
 const db = require('./db');
@@ -16,7 +17,7 @@ app.get('/movies/:title', async (req, res) => {
     const { title } = req.params;
 
     try {
-        // Busca informações da OMDb API
+        // Buscando informações na API fornecida para o teste
         const response = await axios.get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API_KEY}`);
         const movie = response.data;
 
@@ -24,7 +25,7 @@ app.get('/movies/:title', async (req, res) => {
             return res.status(404).json({ message: 'Filme não encontrado.' });
         }
 
-        // Salva no banco de dados
+        // Consultando o Banco de Dados e inserindo informações
         const query = 'INSERT INTO movies (title, year, genre, director) VALUES (?, ?, ?, ?)';
         const values = [movie.Title, movie.Year, movie.Genre, movie.Director];
 
